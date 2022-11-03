@@ -29,11 +29,12 @@ class _HomePageState extends State<HomePage> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        backgroundColor: Color(0xFFDBCBDC),
         body: SafeArea(
-      child: SingleChildScrollView(
-        child: _body(height, width),
-      ),
-    ));
+          child: SingleChildScrollView(
+            child: _body(height, width),
+          ),
+        ));
   }
 
   _body(double height, double width) => RxBuilder(builder: (_) {
@@ -66,23 +67,23 @@ class _HomePageState extends State<HomePage> {
                 height: height * .01,
               ),
               Text(
-                'Loan amount: ',
-                style: TextStyle(fontSize: 14),
+                'Loan amount',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
                 '\$ ${_currencyFormat(controller.loanAmountValue)}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               SizedBox(
                 height: height * .01,
               ),
               Text(
-                'Estimated pr. month: ',
-                style: TextStyle(fontSize: 14),
+                'Estimated per month',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
                 '\$ ${_currencyFormat(controller.estimatedMortgageValue)}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               SizedBox(
                 height: height * .01,
