@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../home_controller.dart';
+import '../widgets/text_and_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,30 +50,17 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: height * .01,
               ),
-              Text(
-                'Purchase price: ',
-                style: TextStyle(fontSize: 14),
+              TextAndSlider(
+                fieldName: 'Purchase price',
               ),
-              Slider(
-                  onChanged: (double value) {
-                    controller.downPaymentValue = value;
-                  },
-                  value: controller.downPaymentValue,
-                  min: 0.0,
-                  max: 24000),
-              SizedBox(
-                height: height * .01,
+              TextAndSlider(
+                fieldName: 'Down payment',
               ),
-              Text(
-                'Down payment: ',
-                style: TextStyle(fontSize: 14),
+              TextAndSlider(
+                fieldName: 'Repayment time',
               ),
-              SizedBox(
-                height: height * .01,
-              ),
-              Text(
-                'Interest rate: ',
-                style: TextStyle(fontSize: 14),
+              TextAndSlider(
+                fieldName: 'Interest rate',
               ),
               SizedBox(
                 height: height * .01,
@@ -80,12 +69,20 @@ class _HomePageState extends State<HomePage> {
                 'Loan amount: ',
                 style: TextStyle(fontSize: 14),
               ),
+              Text(
+                '\$ ${_currencyFormat(controller.loanAmountValue)}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
               SizedBox(
                 height: height * .01,
               ),
               Text(
                 'Estimated pr. month: ',
                 style: TextStyle(fontSize: 14),
+              ),
+              Text(
+                '\$ ${_currencyFormat(controller.estimatedMortgageValue)}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               SizedBox(
                 height: height * .01,
@@ -94,11 +91,47 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Get a mortgage quote'),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {},
+                onPressed: () {
+                  controller.calculateLoanAmount();
+                  controller.calculateMortgage();
+                },
                 shape: StadiumBorder(),
               ),
             ],
           ),
         );
       });
+}
+
+String _currencyFormat(double value) {
+  var usdCurrency = new NumberFormat("#,##0.00", "en_US");
+  return usdCurrency.format(value);
+}
+
+_textAndSlider(double value, String fieldName) {
+  return Column(
+    children: [
+      RichText(
+        text: TextSpan(
+            text: fieldName,
+            style: TextStyle(color: Colors.black, fontSize: 14),
+            children: <TextSpan>[
+              TextSpan(
+                text: ' \$ ${_currencyFormat(value)}: ',
+                style: TextStyle(color: Colors.blueAccent, fontSize: 18),
+              )
+            ]),
+      ),
+      Slider(
+          onChanged: (double newValue) {
+            value = newValue;
+          },
+          value: value,
+          min: 0.0,
+          max: 900000),
+      SizedBox(
+        height: 16,
+      ),
+    ],
+  );
 }
