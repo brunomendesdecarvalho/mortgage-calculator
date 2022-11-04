@@ -92,10 +92,13 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Get a mortgage quote'),
                 textColor: Colors.white,
                 color: Colors.purple,
-                onPressed: () {
-                  controller.calculateLoanAmount();
-                  controller.calculateMortgage();
-                },
+                onPressed:
+                    controller.purchaseValue >= controller.downPaymentValue
+                        ? () {
+                            controller.calculateLoanAmount();
+                            controller.calculateMortgage();
+                          }
+                        : null,
                 shape: StadiumBorder(),
               ),
             ],
